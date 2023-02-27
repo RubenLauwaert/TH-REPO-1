@@ -1,0 +1,10 @@
+{
+    "@context": "https://linkedsoftwaredependencies.org/bundles/npm/example-module/^1.0.0/components/context.jsonld",
+    "@graph": [
+      {
+        "comment": "Extractor for macaroons",
+        "@id": "urn:solid-server:default:MacaroonExtractor",
+        "@type": "MacaroonExtractor"
+      }
+    ]
+  }

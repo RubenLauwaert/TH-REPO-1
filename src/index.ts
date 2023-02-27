@@ -1,1 +1,1 @@
-export * from './authorization/MacaroonBasedAuthorizer'
+export * from './authorization/MacaroonExtractor'

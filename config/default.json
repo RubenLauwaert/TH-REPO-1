@@ -1,11 +1,13 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/example-module/^1.0.0/components/context.jsonld",
   "import": [
-    "css.json"
+    "css.json",
+    "authorization/macaroon-extractor.json",
+    "authorization/macaroon.json"
   ],
   "@graph": [
     {
-      "comment": "A single-pod server that stores its resources in memory."
+      "comment": "A single-pod server that allows for the usage of macaroons as access tokens"
     }
   ]
 }
