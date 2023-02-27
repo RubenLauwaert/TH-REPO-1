@@ -21,11 +21,13 @@ export class MacaroonBasedAuthorizer extends Authorizer {
   public constructor(resourceSet: ResourceSet) {
     super();
     this.resourceSet = resourceSet;
+    this.logger.info(`Constructing object : ${this}`);
   }
 
   public async handle(input: AuthorizerInput): Promise<void> {
     const { credentials, requestedModes, availablePermissions } = input;
 
+    this.logger.warn("Injection successful!");
     // Ensure all required modes are within the agent's permissions.
     for (const [ identifier, modes ] of requestedModes.entrySets()) {
       const modeString = [ ...modes ].join(',');
