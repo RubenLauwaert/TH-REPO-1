@@ -1,6 +1,6 @@
 {
-  "name": "example-module",
-  "author": "example-author",
+  "name": "Thesis - Ruben Lauwaert",
+  "author": "Ruben Lauwaert",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -8,17 +8,19 @@
   "scripts": {
     "build": "npm run build:ts && npm run build:components",
     "build:components": "componentsjs-generator -s src -c dist/components -i .componentsignore",
-    "build:ts": "tsc",
-    "start": "npx community-solid-server -c ./config/default.json -m ."
+    "build:ts": "tsc -w",
+    "start": "npx community-solid-server -c ./config/default.json -m .",
+    "dev-start": "nodemon --exec npx community-solid-server -c ./config/default.json -m ."
   },
   "license": "ISC",
   "dependencies": {
-    "@solid/community-server": "^5.1.0"
+    "@solid/community-server": "^5.1.0",
+    "macaroons.js": "^0.3.9"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
     "componentsjs-generator": "^3.0.3"
-  },  
+  },
   "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/example-module",
   "lsd:components": "dist/components/components.jsonld",
   "lsd:contexts": {
