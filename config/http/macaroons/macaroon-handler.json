@@ -1,0 +1,21 @@
+{
+  "@context": ["https://linkedsoftwaredependencies.org/bundles/npm/mbacsa-component/^1.0.0/components/context.jsonld",
+  "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^5.0.0/components/context.jsonld"],
+  "import":[
+    "./macaroon-http-handler.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Routes all Macaroon related requests to the MacaroonHttpHandler",
+      "@id": "urn:mbacsa-component:default:MacaroonHandler",
+      "@type": "RouterHandler",
+      "args_baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" },
+      "args_targetExtractor": { "@id": "urn:solid-server:default:TargetExtractor" },
+      "args_allowedMethods": [ "*" ],
+      "args_allowedPathNames": [ "^/.macaroon/*"],
+      "args_handler": {
+        "@type": "MacaroonHttpHandler"
+      }
+    }
+  ]
+}

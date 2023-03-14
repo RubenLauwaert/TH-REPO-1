@@ -1,0 +1,10 @@
+{
+    "@context": "https://linkedsoftwaredependencies.org/bundles/npm/mbacsa-component/^1.0.0/components/context.jsonld",
+    "@graph": [
+      {
+        "comment": "Http handler for specific macaroon http requests",
+        "@id": "urn:mbacsa-component:default:MacaroonHttpHandler",
+        "@type": "MacaroonHttpHandler"
+      }
+    ]
+}

@@ -15,8 +15,9 @@ export class MacaroonExtractor extends CredentialsExtractor {
   protected readonly logger = getLoggerFor(this);
 
 
-  public async canHandle({headers}: HttpRequest): Promise<void> {
-    const { authorization } = headers;
+  public async canHandle(input: HttpRequest): Promise<void> {
+    const { authorization, dpop } = input.headers;
+    this.logger.info(JSON.stringify(input.headers));
     if (!matchesAuthorizationScheme('Bearer', authorization)) {
       throw new NotImplementedHttpError('No Bearer Authorization header specified.');
     }

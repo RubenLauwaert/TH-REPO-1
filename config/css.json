@@ -5,7 +5,6 @@
     "css:config/app/init/initialize-prefilled-root.json",
     "css:config/app/setup/optional.json",
     "css:config/app/variables/default.json",
-    "css:config/http/handler/default.json",
     "css:config/http/middleware/websockets.json",
     "css:config/http/server-factory/websockets.json",
     "css:config/http/static/default.json",
