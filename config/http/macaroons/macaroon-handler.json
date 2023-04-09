@@ -1,8 +1,9 @@
 {
-  "@context": ["https://linkedsoftwaredependencies.org/bundles/npm/mbacsa-component/^1.0.0/components/context.jsonld",
+  "@context": [
   "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^5.0.0/components/context.jsonld"],
   "import":[
-    "./macaroon-http-handler.json"
+    "./macaroon-discharge-http-handler.json",
+    "./macaroon-mint-http-handler.json"
   ],
   "@graph": [
     {
@@ -14,7 +15,11 @@
       "args_allowedMethods": [ "*" ],
       "args_allowedPathNames": [ "^/.macaroon/fetch$", "^/.macaroon/discharge$"],
       "args_handler": {
-        "@type": "MacaroonHttpHandler"
+        "@type": "WaterfallHandler",
+        "handlers": [
+          {"@id": "urn:mbacsa-component:default:MacaroonDischargeHttpHandler"},
+          {"@id": "urn:mbacsa-component:default:MacaroonMintHttpHandler"}
+        ]
       }
     }
   ]

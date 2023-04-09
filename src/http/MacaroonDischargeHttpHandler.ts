@@ -1,0 +1,26 @@
+import { HttpHandler, HttpHandlerInput } from '@solid/community-server';
+import { getLoggerFor } from '@solid/community-server';
+
+
+export class MacaroonDischargeHttpHandler extends HttpHandler {
+  protected readonly logger = getLoggerFor(this);
+  private path:String;
+  
+
+  constructor(args_path: String){
+    super();
+    this.path = args_path;
+  }
+
+  public async canHandle(input: HttpHandlerInput): Promise<void> {
+    this.logger.info(input.request.url!);
+    if(input.request.url! != this.path){
+      throw new Error("Invalid path");
+    }
+  }
+
+  public async handle(input: HttpHandlerInput): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  
+}

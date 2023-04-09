@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npm run build:ts && npm run build:components",
+    "build": "npm run build:ts",
     "build:components": "componentsjs-generator -s src -c dist/components -i .componentsignore",
     "build:ts": "tsc -w",
     "start": "npx community-solid-server -c ./config/default.json -m .",

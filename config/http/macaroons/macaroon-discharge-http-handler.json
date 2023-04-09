@@ -1,0 +1,11 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/mbacsa-component/^1.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Http handler for macaroon discharge http requests",
+      "@id": "urn:mbacsa-component:default:MacaroonDischargeHttpHandler",
+      "@type": "MacaroonDischargeHttpHandler",
+      "args_path": "^/.macaroon/discharge/"
+    }
+  ]
+}
