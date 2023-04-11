@@ -13,7 +13,7 @@
       "args_baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" },
       "args_targetExtractor": { "@id": "urn:solid-server:default:TargetExtractor" },
       "args_allowedMethods": [ "*" ],
-      "args_allowedPathNames": [ "^/.macaroon/fetch$", "^/.macaroon/discharge$"],
+      "args_allowedPathNames": [ "/.macaroon/"],
       "args_handler": {
         "@type": "WaterfallHandler",
         "handlers": [

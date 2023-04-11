@@ -4,7 +4,8 @@
     {
       "comment": "Component responsible for handling macaroon mint requests",
       "@id": "urn:mbacsa-component:default:MacaroonMintHttpHandler",
-      "@type": "MacaroonMintHttpHandler"
+      "@type": "MacaroonMintHttpHandler",
+      "args_path": "/.macaroon/mint$"
     }
   ]
 }

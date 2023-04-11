@@ -5,7 +5,7 @@
       "comment": "Http handler for macaroon discharge http requests",
       "@id": "urn:mbacsa-component:default:MacaroonDischargeHttpHandler",
       "@type": "MacaroonDischargeHttpHandler",
-      "args_path": "^/.macaroon/discharge/"
+      "args_path": "/.macaroon/discharge$"
     }
   ]
 }

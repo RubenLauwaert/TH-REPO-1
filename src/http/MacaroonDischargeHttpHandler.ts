@@ -13,8 +13,9 @@ export class MacaroonDischargeHttpHandler extends HttpHandler {
   }
 
   public async canHandle(input: HttpHandlerInput): Promise<void> {
-    this.logger.info(input.request.url!);
+    
     if(input.request.url! != this.path){
+      this.logger.info(input.request.url!);
       throw new Error("Invalid path");
     }
   }
