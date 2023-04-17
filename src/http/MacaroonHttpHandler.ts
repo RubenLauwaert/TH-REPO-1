@@ -1,52 +1,91 @@
-import { getLoggerFor } from '@solid/community-server';
-import type { HttpHandlerInput } from '@solid/community-server';
-import { HttpHandler } from '@solid/community-server';
+import  { CredentialSet,
+              CredentialsExtractor,
+              Authorizer,
+              PermissionReader,
+              ModesExtractor,
+              ResponseDescription,
+              getLoggerFor,
+              OperationHttpHandlerInput,
+              OperationHttpHandler } from '@solid/community-server';
 
-const MACAROON_BASE_PATH = "/.macaroon";
-const DISCHARGE_PATH = MACAROON_BASE_PATH + "/discharge";
-const FETCH_PATH = MACAROON_BASE_PATH + "/fetch";
 
+export interface AuthorizingHttpHandlerArgs {
+  /**
+   * Extracts the credentials from the incoming request.
+   */
+  credentialsExtractor: CredentialsExtractor;
+  /**
+   * Extracts the required modes from the generated Operation.
+   */
+  modesExtractor: ModesExtractor;
+  /**
+   * Reads the permissions available for the Operation.
+   */
+  permissionReader: PermissionReader;
+  /**
+   * Verifies if the requested operation is allowed.
+   */
+  authorizer: Authorizer;
+  /**
+   * Handler to call if the operation is authorized.
+   */
+  operationHandler: OperationHttpHandler;
+}
 
 /**
- * HTTP handler for macaroons
+ * Handles all the necessary steps for an authorization.
+ * Errors if authorization fails, otherwise passes the parameter to the operationHandler handler.
+ * The following steps are executed:
+ *  - Extracting credentials from the request.
+ *  - Extracting the required permissions.
+ *  - Reading the allowed permissions for the credentials.
+ *  - Validating if this operation is allowed.
  */
-export class MacaroonHttpHandler extends HttpHandler {
-  protected readonly logger = getLoggerFor(this);
+export class MacaroonHttpHandler extends OperationHttpHandler {
+  private readonly logger = getLoggerFor(this);
 
-  public constructor() {
+  private readonly credentialsExtractor: CredentialsExtractor;
+  private readonly modesExtractor: ModesExtractor;
+  private readonly permissionReader: PermissionReader;
+  private readonly authorizer: Authorizer;
+  private readonly operationHandler: OperationHttpHandler;
+
+  public constructor(args: AuthorizingHttpHandlerArgs) {
     super();
+    this.credentialsExtractor = args.credentialsExtractor;
+    this.modesExtractor = args.modesExtractor;
+    this.permissionReader = args.permissionReader;
+    this.authorizer = args.authorizer;
+    this.operationHandler = args.operationHandler;
   }
 
-  public static isFetchURL(url:string|undefined):boolean{
-    return url!.normalize() === FETCH_PATH.normalize();
-  }
+  public async handle(input: OperationHttpHandlerInput): Promise<ResponseDescription> {
 
-  public static isDischargeURL(url: string|undefined):boolean{  
-    return url!.normalize() === DISCHARGE_PATH.normalize();
-  }
+    this.logger.info("In MacaroonHttpHandler !!!");
 
-  public async canHandle(input: HttpHandlerInput): Promise<void> {
-      
+    const { request, operation } = input;
+    this.logger.info('Test for Authorization ... ');
+    const credentials: CredentialSet = await this.credentialsExtractor.handleSafe(request);
+    this.logger.verbose(`Extracted credentials: ${JSON.stringify(credentials)}`);
+
+    const requestedModes = await this.modesExtractor.handleSafe(operation);
+    this.logger.verbose(`Retrieved required modes: ${[ ...requestedModes ].join(',')}`);
+
+    const availablePermissions = await this.permissionReader.handleSafe({ credentials, requestedModes });
+    this.logger.verbose(`Available permissions are ${JSON.stringify(availablePermissions)}`);
     
-  }
 
-
-  public async handle(input: HttpHandlerInput): Promise<void> {
-    this.logger.info("Handling request for macaroons !");
-    const { request } = input;
-      const { url } = request;
-
-    // Handle fetching of macaroons
-    if(MacaroonHttpHandler.isFetchURL(url)){
-      console.log("Checking if fetching of macaroon is allowed!");
+    try {
+      await this.authorizer.handleSafe({ credentials, requestedModes, availablePermissions });
+      operation.availablePermissions = availablePermissions;
+    } catch (error: unknown) {
+      this.logger.verbose(`Authorization failed: ${(error as any).message}`);
+      throw error;
     }
-    // Handle discharging of macaroons
-    else if(MacaroonHttpHandler.isDischargeURL(url)){
-      console.log("Checking if discharging of macaroon is allowed!");
-    }
+
+    this.logger.verbose(`Authorization succeeded, calling source handler`);
+
+
+    return this.operationHandler.handleSafe(input);
   }
-
-
-
-
 }
